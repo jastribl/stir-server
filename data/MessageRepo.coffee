@@ -20,11 +20,11 @@ getMessagesForConversationIdLimitToNumBeforeDate = (_conversation, limitNum, dat
     .limit(limitNum)
     .exec next
 
-getMessagesForConversationIdLimitToNum = (_conversation, limitNum, next) -> # todo: remove this if not used
+getMessagesForConversationIdLimitToNum = (_conversation, limitNum, next) ->
     Message.find({ _conversation: _conversation })
     .select('date content _user')
     .populate('_user', 'username')
-    .sort({ date: -1 })
+    .sort({ date: 1 })
     .limit(limitNum)
     .exec next
 
