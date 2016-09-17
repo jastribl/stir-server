@@ -1,6 +1,7 @@
 express = require('express')
 
 MessageRepo = require('../data/MessageRepo')
+MergingService = require('../services/MergingService')
 
 numberOfMessagesToLoad = 30
 
@@ -23,6 +24,7 @@ module.exports = (io) ->
                     return next(err) if err
                     io.sockets.in(_conversation).emit('newMessages', _conversation, [populatedMessage])
                     res.sendStatus(201)
+                    # MergingService.getNewMergingServiceWorker(_conversation).attemptMerging() # todo: <-- this
 
         .post '/delete', (req, res, next) -> # todo: remove this if not used
             _message = req.body._message

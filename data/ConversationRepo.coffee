@@ -5,31 +5,14 @@ createNewConversation = (options, next) ->
     new Conversation(options)
         .save next
 
-populateConversationMembersDisplayInfo = (conversations, next) -> # todo: remove this if not used
-    Conversation.populate conversations, {
-        path: '_members'
-        select: 'username'
-    }, next
+getConversationById = (_conversation, next) ->
+    Conversation.findById(_conversation)
+    .exec next
 
-updateConversationProperties = (conversation, next) -> # todo: remove this if not used
-    Conversation.findByIdAndUpdate conversation._id,
-    { $set: conversation },
-    next
+getAllConversationIds = (next) ->
+    Conversation.find().distinct '_id', next
 
-deleteConversationById = (_conversation, next) -> # todo: remove this if not used
-    Conversation.findByIdAndRemove _conversation, next
-
-addMemberToConversation = (_conversation, _member, next) -> # todo: remove this if not used
-    Conversation.findByIdAndUpdate _conversation,
-    { $addToSet: { _members: _member } },
-    next
-
-removeMemberFromConversation = (_conversation, _member, next) -> # todo: remove this if not used
-    Conversation.findByIdAndUpdate _conversation,
-    { $pull: { _members: _member } },
-    next
-
-getConversationMembersById = (_conversation, next) -> # todo: remove this if not used
+getConversationMembersById = (_conversation, next) ->
     Conversation.findById(_conversation)
     .select('_members')
     .exec (err, conversation) ->
@@ -38,10 +21,7 @@ getConversationMembersById = (_conversation, next) -> # todo: remove this if not
 
 module.exports = {
     createNewConversation: createNewConversation
-    populateConversationMembersDisplayInfo: populateConversationMembersDisplayInfo
-    updateConversationProperties: updateConversationProperties
-    deleteConversationById: deleteConversationById
-    addMemberToConversation: addMemberToConversation
-    removeMemberFromConversation: removeMemberFromConversation
+    getConversationById: getConversationById
+    getAllConversationIds: getAllConversationIds
     getConversationMembersById: getConversationMembersById
 }

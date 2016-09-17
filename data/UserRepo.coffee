@@ -23,10 +23,16 @@ addConversationToUser = (_user, _conversation, next) ->
     { $push: { _conversations: _conversation } },
     next
 
+removeConversationFromUser = (_conversation, _user, next) ->
+    User.findByIdAndUpdate _user,
+    { $pull: { _conversations: _conversation } },
+    next
+
 module.exports = {
     createNewUser: createNewUser
     getUserById: getUserById
     getUserByUserName: getUserByUserName
     getConversationIdsFromUserWithId: getConversationIdsFromUserWithId
     addConversationToUser: addConversationToUser
+    removeConversationFromUser: removeConversationFromUser
 }
