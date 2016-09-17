@@ -18,10 +18,15 @@ getConversationIdsFromUserWithId = (_user, next) ->
     .select('_conversations')
     .exec next
 
+addConversationToUser = (_user, _conversation, next) ->
+    User.findByIdAndUpdate _user,
+    { $push: { _conversations: _conversation } },
+    next
 
 module.exports = {
     createNewUser: createNewUser
     getUserById: getUserById
     getUserByUserName: getUserByUserName
     getConversationIdsFromUserWithId: getConversationIdsFromUserWithId
+    addConversationToUser: addConversationToUser
 }

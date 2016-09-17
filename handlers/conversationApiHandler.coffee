@@ -9,9 +9,13 @@ createNewConversation = (req, res, next) ->
         ConversationRepo.createNewConversation {
             _parents: []
             _members: [_user, user._id]
-        }, (err) ->
+        }, (err, newConversation) ->
             return next(err) if err
-            res.send(200)
+            UserRepo.addConversationToUser _user, newConversation._id, (err) ->
+                return next(err) if err
+                UserRepo.addConversationToUser user._id, newConversation._id, (err) ->
+                    return next(err) if err
+                    res.send(200)
 
 getConversations = (req, res, next) ->
     _user = req.user._id
