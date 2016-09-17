@@ -24,9 +24,10 @@ module.exports = (io) ->
                         return next(err) if err
                         UserRepo.addConversationToUser user._id, newConversation._id, (err) ->
                             return next(err) if err
-                            res.sendStatus(200)
-                            io.sockets.in("user_#{_user}").emit('newConversation', newConversation._id)
-                            io.sockets.in("user_#{user._id}").emit('newConversation', newConversation._id)
+                            res.sendStatus(200, {
+                                conversation_id: newConversation._id
+                            })
+                            io.sockets.in("user_#{user._id}").emit('newConversation', newConversation._id, )
 
         .get '/all', (req, res, next) ->
             _user = req.user._id
