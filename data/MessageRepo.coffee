@@ -35,7 +35,7 @@ deleteByConversationId = (_conversation, next) -> # todo: remove this if not use
 deleteMessageById = (_message, next) -> # todo: remove this if not used
     Message.findByIdAndRemove _message, next
 
-populateMessagesWithUsername = (messages, next) -> # todo: remove this if not used
+populateMessagesWithUsername = (messages, next) ->
     Message.populate messages, {
         path: '_user'
         select: 'username'
