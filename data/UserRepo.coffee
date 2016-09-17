@@ -13,8 +13,15 @@ getUserByUserName = (username, next) ->
     User.findOne { username: username },
     next
 
+getConversationIdsFromUserWithId = (_user, next) ->
+    User.findById(_user)
+    .select('_conversations')
+    .exec next
+
+
 module.exports = {
     createNewUser: createNewUser
     getUserById: getUserById
     getUserByUserName: getUserByUserName
+    getConversationIdsFromUserWithId: getConversationIdsFromUserWithId
 }

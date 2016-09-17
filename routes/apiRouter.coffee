@@ -2,7 +2,7 @@ express = require('express')
 
 module.exports = (io) ->
 
-    testsApiRouter = require('./testsApiRouter')
+    conversationsApiRouter = require('./conversationsApiRouter')
 
     return express.Router()
-        .use('/tests', testsApiRouter)
+        .use('/conversations', conversationsApiRouter)

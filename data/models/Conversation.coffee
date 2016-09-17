@@ -4,8 +4,7 @@ bcrypt = require('bcrypt-nodejs')
 
 
 conversationSchema = new Schema({
-    username: String
-    password: String
+    _parents: [{ type: Schema.Types.ObjectId, ref: 'conversation' }]
     _members: [{ type: Schema.Types.ObjectId, ref: 'user' }]
 })
 
