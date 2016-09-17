@@ -17,7 +17,7 @@ module.exports = (io) ->
             return next(err) if err
             MessageRepo.populateMessagesWithUsername newMessage, (err, populatedMessage) ->
                 return next(err) if err
-                io.sockets.in(_conversation).emit('newMessage', populatedMessage)
+                io.sockets.in(_conversation).emit('newMessages', [populatedMessage])
                 res.sendStatus(201)
 
     deleteMessage = (req, res, next) -> # todo: remove this if not used
