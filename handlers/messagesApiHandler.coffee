@@ -30,11 +30,6 @@ module.exports = (io) ->
                 io.sockets.in(_conversation).emit('removeMessage', _message)
                 res.sendStatus(200)
 
-    getInitialMessages = (req, res, next) -> # todo: remove this if not used
-        MessageRepo.getMessagesForConversationIdLimitToNum req.body._conversation, numberOfMessagesToLoad, (err, messages) ->
-            return next(err) if err
-            res.json(messages)
-
     getMoreMessages = (req, res, next) -> # todo: remove this if not used
         MessageRepo.getMessagesForConversationIdLimitToNumBeforeDate req.body._conversation, numberOfMessagesToLoad, req.body.lastDate, (err, messages) ->
             return next(err) if err
@@ -43,6 +38,5 @@ module.exports = (io) ->
     {
         addNewMessage: addNewMessage
         deleteMessage: deleteMessage
-        getInitialMessages: getInitialMessages
         getMoreMessages: getMoreMessages
     }

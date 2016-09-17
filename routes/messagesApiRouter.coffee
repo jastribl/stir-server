@@ -12,5 +12,4 @@ module.exports = (io) ->
     express.Router()
         .post '/new', messagesApiHandler.addNewMessage
         .post '/delete', messagesApiHandler.deleteMessage
-        .post '/getInitial', messagesApiHandler.getInitialMessages
         .post '/getMore', messagesApiHandler.getMoreMessages
