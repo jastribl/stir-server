@@ -11,7 +11,7 @@ createNewConversation = (req, res, next) ->
             _members: [_user, req.user._id]
         }, (err) ->
             return next(err) if err
-            res.setStatus(200)
+            res.send(200)
 
 getConversations = (req, res, next) ->
     _user = req.user._id
