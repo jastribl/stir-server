@@ -5,7 +5,6 @@ createNewConversation = (req, res, next) ->
     _user = req.user._id
     otherUserName = req.body.otherUserName
     UserRepo.getUserByUserName otherUserName, (err, user) ->
-        console.log user
         return next(err) if err
         ConversationRepo.createNewConversation {
             _parents: []
