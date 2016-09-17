@@ -7,10 +7,9 @@ numberOfMessagesToLoad = 30
 
 module.exports = (io) ->
 
-    messagesApiHandler = require('../handlers/messagesApiHandler')(io)
-
     express.Router()
-        .post '/new', (req, res, next) -> # todo: remove this if not used
+
+        .post '/new', (req, res, next) ->
             _conversation = req.body._conversation
 
             MessageRepo.createNewMessage {

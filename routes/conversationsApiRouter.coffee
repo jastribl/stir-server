@@ -4,6 +4,7 @@ UserRepo = require('../data/UserRepo')
 ConversationRepo = require('../data/ConversationRepo')
 
 module.exports = express.Router()
+
     .post '/new', (req, res, next) ->
         _user = req.user._id
         otherUserName = req.body.otherUserName
