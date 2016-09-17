@@ -41,6 +41,7 @@ require('./passport')
 app.use(passport.initialize())
 app.use(passport.session())
 
+require('./socketManager')(io)
 router = require('./routes/router')(io)
 app.use(router)
 

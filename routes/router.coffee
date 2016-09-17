@@ -1,11 +1,10 @@
 express = require('express')
 
 loggedIn = (req, res, next) ->
-    next() # todo: remove this
-    # if req.isAuthenticated()
-    #     next()
-    # else
-    #     res.sendStatus(401)
+    if req.isAuthenticated()
+        next()
+    else
+        res.sendStatus(401)
 
 module.exports = (io) ->
 

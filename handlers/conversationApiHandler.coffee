@@ -6,6 +6,8 @@ createNewConversation = (req, res, next) ->
     otherUserName = req.body.otherUserName
     UserRepo.getUserByUserName otherUserName, (err, user) ->
         return next(err) if err
+        unless user?
+            return next('error, this user does not exist')
         ConversationRepo.createNewConversation {
             _parents: []
             _members: [_user, user._id]
