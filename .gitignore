@@ -1,0 +1,6 @@
+node_modules
+npm-debug.log
+*.sublime-workspace
+config.json
+*.js
+!server.js
