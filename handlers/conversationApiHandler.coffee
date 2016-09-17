@@ -3,12 +3,13 @@ ConversationRepo = require('../data/ConversationRepo')
 
 createNewConversation = (req, res, next) ->
     _user = req.user._id
-    otherUserName = req.params.otherUserName
+    otherUserName = req.body.otherUserName
     UserRepo.getUserByUserName otherUserName, (err, user) ->
+        console.log user
         return next(err) if err
         ConversationRepo.createNewConversation {
             _parents: []
-            _members: [_user, req.user._id]
+            _members: [_user, user._id]
         }, (err) ->
             return next(err) if err
             res.send(200)
