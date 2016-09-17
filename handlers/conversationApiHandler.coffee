@@ -8,7 +8,7 @@ createNewConversation = (req, res, next) ->
         return next(err) if err
         ConversationRepo.createNewConversation {
             _parents: []
-            _members: [_user, user._id]
+            _members: [_user, req.user._id]
         }, (err) ->
             return next(err) if err
             res.setStatus(200)
