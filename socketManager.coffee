@@ -11,6 +11,7 @@ module.exports = (io) ->
         socket.on 'conversationSubscribe', (user) ->
             socket.user = user
             _user = user._id
+            socket.join("user_#{_user}")
             UserRepo.getConversationIdsFromUserWithId _user, (err, populatedUser) ->
                 if err
                     socket.emit('error')
