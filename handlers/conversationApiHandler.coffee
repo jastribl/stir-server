@@ -15,7 +15,7 @@ createNewConversation = (req, res, next) ->
                 return next(err) if err
                 UserRepo.addConversationToUser user._id, newConversation._id, (err) ->
                     return next(err) if err
-                    res.send(200)
+                    res.sendStatus(200)
 
 getConversations = (req, res, next) ->
     _user = req.user._id
