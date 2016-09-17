@@ -35,7 +35,7 @@ app.use(session({
     saveUninitialized: false
 }))
 
-app.use(cors({credentials: true, origin: true, methods: ['GET', 'PUT', 'POST', 'DELETE']}))
+app.use(cors({ credentials: true, origin: true, methods: ['GET', 'PUT', 'POST', 'DELETE'], credentials: true }))
 
 require('./passport')
 app.use(passport.initialize())
