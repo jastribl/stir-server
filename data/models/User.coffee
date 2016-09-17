@@ -6,6 +6,7 @@ bcrypt = require('bcrypt-nodejs')
 userSchema = new Schema({
     username: String
     password: String
+    _conversations: [{ type: Schema.Types.ObjectId, ref: 'conversation' }]
 })
 
 userSchema.methods.encryptPassword = ->

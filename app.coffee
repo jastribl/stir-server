@@ -1,5 +1,6 @@
 fs = require('fs')
 express = require('express')
+cors = require('cors')
 app = express()
 http = require('http').Server(app)
 io = require('socket.io')(http)
@@ -24,9 +25,6 @@ app.use(logger('dev'))
 app.use(cookieParser())
 app.use(bodyParser.json())
 
-app.use(express.static(__dirname + '/dist'))
-app.use('/node_modules', express.static(__dirname + '/node_modules'))
-
 app.use(session({
     secret: config.sessionSecret
     cookie: {
@@ -36,6 +34,8 @@ app.use(session({
     resave: false
     saveUninitialized: false
 }))
+
+app.use(cors({credentials: true, origin: true, methods: ['GET', 'PUT', 'POST', 'DELETE']}))
 
 require('./passport')
 app.use(passport.initialize())

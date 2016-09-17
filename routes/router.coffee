@@ -15,7 +15,7 @@ module.exports = (io) ->
     authRouter = require('./authRouter')
 
     router.use('/api', loggedIn, apiRouter)
-    router.use(authRouter)
+    router.use('/auth', authRouter)
 
     router.use (err, req, res, next) ->
         res.sendStatus(500).send(err)
