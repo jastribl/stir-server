@@ -1,4 +1,5 @@
 UserRepo = require('./data/UserRepo')
+MessageRepo = require('./data/MessageRepo')
 ConversationRepo = require('./data/ConversationRepo')
 
 numberOfMessagesToLoad = 30
