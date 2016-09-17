@@ -11,7 +11,9 @@ module.exports = (io) ->
             socket.user = user
             _user = user._id
             UserRepo.getConversationIdsFromUserWithId _user, (err, populatedUser) ->
-                if !err
+                if err
+                    socket.emit('error')
+                else
                     socket.emit('allConversationIds', populatedUser['_conversations'])
 
         socket.on 'conversationConnect', (_conversation) ->
@@ -19,5 +21,7 @@ module.exports = (io) ->
                 if not err and _members? and _members.indexOf(socket.user._id) isnt -1
                     socket.join(_conversation)
                     MessageRepo.getMessagesForConversationIdLimitToNum _conversation, numberOfMessagesToLoad, (err, messages) ->
-                        unless err
+                        if err
+                            socket.emit('error')
+                        else
                             socket.emit('newMessages', _conversation, messages)
