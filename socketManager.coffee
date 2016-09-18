@@ -25,7 +25,7 @@ module.exports = (io) ->
             UserRepo.getConversationIdsFromUserWithId socket.user._id, (err, myUser) ->
                 if not err and myUser._conversations? and myUser._conversations.indexOf(_conversation) isnt -1
                     socket.join(_conversation)
-                    MessageRepo.getMessagesForConversationIdLimitToNum _conversation, (err, messages) ->
+                    MessageRepo.getMessagesForConversationId _conversation, (err, messages) ->
                         if err
                             socket.emit('error')
                         else

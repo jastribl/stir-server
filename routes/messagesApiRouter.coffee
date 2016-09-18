@@ -24,9 +24,8 @@ module.exports = (io) ->
                     return next(err) if err
                     io.sockets.in(_conversation).emit('newMessages', _conversation, [populatedMessage])
                     res.sendStatus(201)
-                    MergingService.getNewMergingServiceWorker(_conversation).attemptMerging req.body.messageContent, (newConversation, _oldConversation1, _oldConversation2) ->
-                        console.log 'merging: ', _oldConversation1
-                        console.log 'with: ', _oldConversation2
+                    MergingService.getNewMergingServiceWorker(_conversation).attemptMerging (newConversation, _oldConversation1, _oldConversation2) ->
+                        console.log 'merging: ', _oldConversation1, 'with: ', _oldConversation2
                         io.sockets.in(_oldConversation1).emit('mergeNotification', {
                             _oldConversation1: _oldConversation1
                             _oldConversation2: _oldConversation2
@@ -37,9 +36,9 @@ module.exports = (io) ->
                             _oldConversation2: _oldConversation2
                             newConversation: newConversation
                         })
-                        MessageRepo.getMessagesForConversationIdLimitToNum _oldConversation1, (err, messages) ->
+                        MessageRepo.getMessagesForConversationId _oldConversation1, (err, messages) ->
                             io.sockets.in("user_#{req.user._id}").emit('newMessages', _oldConversation1, messages)
-                        MessageRepo.getMessagesForConversationIdLimitToNum _oldConversation2, (err, messages) ->
+                        MessageRepo.getMessagesForConversationId _oldConversation2, (err, messages) ->
                             io.sockets.in("user_#{req.user._id}").emit('newMessages', _oldConversation2, messages)
 
         .post '/delete', (req, res, next) -> # todo: remove this if not used
@@ -53,6 +52,6 @@ module.exports = (io) ->
                     res.sendStatus(200)
 
         .post '/getMore', (req, res, next) -> # todo: remove this if not used
-            MessageRepo.getMessagesForConversationIdLimitToNumBeforeDate req.body._conversation, numberOfMessagesToLoad, req.body.lastDate, (err, messages) ->
+            MessageRepo.getMessagesForConversationIdBeforeDate req.body._conversation, numberOfMessagesToLoad, req.body.lastDate, (err, messages) ->
                 return next(err) if err
                 res.json(messages)

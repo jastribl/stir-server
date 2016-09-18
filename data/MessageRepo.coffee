@@ -1,17 +1,17 @@
 Message = require('./models/Message')
 
 
-createNewMessage = (options, next) -> # todo: remove this if not used
+createNewMessage = (options, next) ->
     new Message(options)
         .save next
 
-getConversationIdOfMessageById = (_message, next) -> # todo: remove this if not used
+getConversationIdOfMessageById = (_message, next) ->
     Message.findById(_message)
     .select('_conversation')
     .exec (err, message) ->
         next(err, message?._conversation)
 
-getMessagesForConversationIdLimitToNumBeforeDate = (_conversation, date, next) -> # todo: remove this if not used
+getMessagesForConversationIdBeforeDate = (_conversation, date, next) ->
     Message.find({ _conversation: _conversation })
     .select('date content _user')
     .populate('_user', 'username')
@@ -19,18 +19,14 @@ getMessagesForConversationIdLimitToNumBeforeDate = (_conversation, date, next) -
     .sort({ date: 1 })
     .exec next
 
-getMessagesForConversationIdLimitToNum = (_conversation, next) ->
+getMessagesForConversationId = (_conversation, next) ->   # todo: fix naming
     Message.find({ _conversation: _conversation })
     .select('date content _user')
     .populate('_user', 'username')
     .sort({ date: 1 })
     .exec next
 
-deleteByConversationId = (_conversation, next) -> # todo: remove this if not used
-    Message.remove { _conversation: _conversation },
-    next
-
-deleteMessageById = (_message, next) -> # todo: remove this if not used
+deleteMessageById = (_message, next) ->
     Message.findByIdAndRemove _message, next
 
 populateMessagesWithUsername = (messages, next) ->
@@ -43,9 +39,8 @@ populateMessagesWithUsername = (messages, next) ->
 module.exports = {
     createNewMessage: createNewMessage
     getConversationIdOfMessageById: getConversationIdOfMessageById
-    getMessagesForConversationIdLimitToNumBeforeDate: getMessagesForConversationIdLimitToNumBeforeDate
-    getMessagesForConversationIdLimitToNum: getMessagesForConversationIdLimitToNum
-    deleteByConversationId: deleteByConversationId
+    getMessagesForConversationIdBeforeDate: getMessagesForConversationIdBeforeDate
+    getMessagesForConversationId: getMessagesForConversationId
     deleteMessageById: deleteMessageById
     populateMessagesWithUsername: populateMessagesWithUsername
 }

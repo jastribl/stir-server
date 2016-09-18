@@ -9,12 +9,12 @@ getConversationById = (_conversation, next) ->
     Conversation.findById(_conversation)
     .exec next
 
-getAllConversationIds = (next) ->
-    Conversation.find().distinct '_id', next
+getAllConversationIdsWhereNotGiven = (_dontGetId, next) ->
+    Conversation.find({ _id: { '$ne': _dontGetId } }).distinct '_id', next
 
 
 module.exports = {
     createNewConversation: createNewConversation
     getConversationById: getConversationById
-    getAllConversationIds: getAllConversationIds
+    getAllConversationIdsWhereNotGiven: getAllConversationIdsWhereNotGiven
 }
