@@ -16,10 +16,11 @@ module.exports = (io) ->
             .select('_conversations')
             .populate('_conversations')
             .exec (err, populatedUser) ->
+                console.log populatedUser._conversations
                 if err
                     socket.emit('error')
                 else
-                    socket.emit('allConversationIds', conversations._conversations)
+                    socket.emit('allConversationIds', populatedUser._conversations)
 
         socket.on 'conversationConnect', (_conversation) ->
             UserRepo.getConversationIdsFromUserWithId socket.user._id, (err, myUser) ->
