@@ -52,6 +52,8 @@ class MergingServiceWorker
                 if result.concept_list
                     all_key_words = all_key_words.concat (concept.form for concept in result.concept_list)
                 callback(all_key_words)
+            else
+                console.log 'result null'
 
     attemptMerging: (callback) =>
         MessageRepo.getMessagesForConversationId @conversationId, (err, myMessages) =>
@@ -63,10 +65,11 @@ class MergingServiceWorker
                         console.log 'myResult', myResult
                         if myResult
                             found_match = false
-                            ConversationRepo.getAllConversationIdsWhereNotGiven @conversationId, (err, allIds) =>
-                                for _convo in allIds
-                                    unless found_match
-                                        MessageRepo.getMessagesForConversationId _convo, (err, messages) =>
+                            ConversationRepo.getAllConversationsWhereIdNotGiven @conversationId, (err, allConversations) =>
+                                # console.log allConversations
+                                for convo in allConversations
+                                    unless found_match or convo.isMerged isnt true
+                                        MessageRepo.getMessagesForConversationId convo._id, (err, messages) =>
                                             unless err
                                                 thing = ""
                                                 thing += "#{message.content} " for message in messages
@@ -77,7 +80,7 @@ class MergingServiceWorker
                                                             if _.intersection(myResult, result).length > 0
                                                                 console.log 'intercected on: _.intersection(myResult, result)'
                                                                 found_match = true
-                                                                @mergeWithConversationAndReturnNewConversation JSON.parse(JSON.stringify(_convo)), callback
+                                                                @mergeWithConversationAndReturnNewConversation JSON.parse(JSON.stringify(convo._id)), callback
 
 getNewMergingServiceWorker = (conversationId) ->
     new MergingServiceWorker(conversationId)
