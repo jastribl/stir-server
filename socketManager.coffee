@@ -1,6 +1,7 @@
 UserRepo = require('./data/UserRepo')
 MessageRepo = require('./data/MessageRepo')
 ConversationRepo = require('./data/ConversationRepo')
+Conversation = require('./data/models/Conversation') # todo get this out of here
 
 module.exports = (io) ->
 
@@ -14,7 +15,8 @@ module.exports = (io) ->
                 if err
                     socket.emit('error')
                 else
-                    socket.emit('allConversationIds', populatedUser['_conversations'])
+                    Conversation.populate populatedUser._conversations, (err, conversations) ->
+                        socket.emit('allConversationIds', conversations)
 
         socket.on 'conversationConnect', (_conversation) ->
             UserRepo.getConversationIdsFromUserWithId socket.user._id, (err, myUser) ->

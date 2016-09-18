@@ -30,6 +30,7 @@
     "gulp": "^3.9.1",
     "gulp-coffeelint": "^0.6.0",
     "gulp-nodemon": "^2.0.6",
+    "meaning-cloud": "^1.1.10",
     "mongoose": "^4.1.7",
     "morgan": "^1.7.0",
     "passport": "^0.3.2",

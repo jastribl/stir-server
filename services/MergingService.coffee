@@ -23,7 +23,7 @@ class MergingServiceWorker
 
     attemptMerging: (callback) =>
         # todo: algorithm
-        ConversationRepo.getAllUnmergedConversationIds (err, allIds) =>
+        ConversationRepo.getAllConversationIds (err, allIds) =>
             for id in allIds
                 if JSON.parse(JSON.stringify(id)) != JSON.parse(JSON.stringify(@conversationId))
                     @mergeWithConversationAndReturnNewConversation JSON.parse(JSON.stringify(id)), callback
