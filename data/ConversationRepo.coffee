@@ -9,12 +9,12 @@ getConversationById = (_conversation, next) ->
     Conversation.findById(_conversation)
     .exec next
 
-getAllConversationIds = (next) ->
-    Conversation.find().distinct '_id', next
+getAllUnmergedConversationIds = (next) ->
+    Conversation.find({ isMerged: false }).distinct '_id', next
 
 
 module.exports = {
     createNewConversation: createNewConversation
     getConversationById: getConversationById
-    getAllConversationIds: getAllConversationIds
+    getAllUnmergedConversationIds: getAllUnmergedConversationIds
 }
