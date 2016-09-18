@@ -26,8 +26,8 @@ module.exports = (io) ->
                             res.send(200, {
                                 'conversation_id': newConversation._id
                             })
-                            io.sockets.in("user_#{_user}").emit('newConversation', newConversation._id)
-                            io.sockets.in("user_#{user._id}").emit('newConversation', newConversation._id)
+                            io.sockets.in("user_#{_user}").emit('newConversation', newConversation)
+                            io.sockets.in("user_#{user._id}").emit('newConversation', newConversation)
 
         .get '/all', (req, res, next) ->
             _user = req.user._id
