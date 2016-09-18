@@ -35,6 +35,10 @@ module.exports = (io) ->
                             _oldConversation2: _oldConversation2
                             newConversation: newConversation
                         })
+                        MessageRepo.getMessagesForConversationIdLimitToNum _oldConversation1, (messages) ->
+                            io.sockets.in("user_#{req.user._id}").emit('newMessages', _oldConversation1, messages)
+                        MessageRepo.getMessagesForConversationIdLimitToNum _oldConversation2, (messages) ->
+                            io.sockets.in("user_#{req.user._id}").emit('newMessages', _oldConversation2, messages)
 
         .post '/delete', (req, res, next) -> # todo: remove this if not used
             _message = req.body._message
