@@ -23,11 +23,6 @@ addConversationToUser = (_user, _conversation, next) ->
     { $push: { _conversations: _conversation } },
     next
 
-removeConversationFromUser = (_conversation, _user, next) ->
-    User.findByIdAndUpdate _user,
-    { $pull: { _conversations: _conversation } },
-    next
-
 addConversationIdToUsersInConversationId = (_oldConversation, _newConversation, next) ->
     User.update { _conversations: { '$eq': _oldConversation, '$ne': _newConversation } },
     { $push: { _conversations: _newConversation } },
@@ -40,6 +35,5 @@ module.exports = {
     getUserByUserName: getUserByUserName
     getConversationIdsFromUserWithId: getConversationIdsFromUserWithId
     addConversationToUser: addConversationToUser
-    removeConversationFromUser: removeConversationFromUser
     addConversationIdToUsersInConversationId: addConversationIdToUsersInConversationId
 }

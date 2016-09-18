@@ -40,18 +40,3 @@ module.exports = (io) ->
                             io.sockets.in("user_#{req.user._id}").emit('newMessages', _oldConversation1, messages)
                         MessageRepo.getMessagesForConversationId _oldConversation2, (err, messages) ->
                             io.sockets.in("user_#{req.user._id}").emit('newMessages', _oldConversation2, messages)
-
-        .post '/delete', (req, res, next) -> # todo: remove this if not used
-            _message = req.body._message
-
-            MessageRepo.getConversationIdOfMessageById _message, (err, _conversation) ->
-                return next(err) if err
-                MessageRepo.deleteMessageById _message, (err) ->
-                    return next(err) if err
-                    io.sockets.in(_conversation).emit('removeMessage', _message)
-                    res.sendStatus(200)
-
-        .post '/getMore', (req, res, next) -> # todo: remove this if not used
-            MessageRepo.getMessagesForConversationIdBeforeDate req.body._conversation, numberOfMessagesToLoad, req.body.lastDate, (err, messages) ->
-                return next(err) if err
-                res.json(messages)
