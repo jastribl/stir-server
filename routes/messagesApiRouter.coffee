@@ -24,7 +24,17 @@ module.exports = (io) ->
                     return next(err) if err
                     io.sockets.in(_conversation).emit('newMessages', _conversation, [populatedMessage])
                     res.sendStatus(201)
-                    # MergingService.getNewMergingServiceWorker(_conversation).attemptMerging() # todo: <-- this
+                    MergingService.getNewMergingServiceWorker(_conversation).attemptMerging (newConversation, _oldConversation1, _oldConversation2) ->
+                        io.sockets.in(_oldConversation1).emit('mergeNotification', {
+                            _oldConversation1: _oldConversation1
+                            _oldConversation2: _oldConversation2
+                            newConversation: newConversation
+                        })
+                        io.sockets.in(_oldConversation2).emit('mergeNotification', {
+                            _oldConversation1: _oldConversation1
+                            _oldConversation2: _oldConversation2
+                            newConversation: newConversation
+                        })
 
         .post '/delete', (req, res, next) -> # todo: remove this if not used
             _message = req.body._message

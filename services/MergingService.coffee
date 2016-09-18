@@ -1,35 +1,33 @@
 ConversationRepo = require('../data/ConversationRepo')
+UserRepo = require('../data/UserRepo')
 
 class MergingServiceWorker
     constructor: (@conversationId) ->
 
     # todo: all errors not caught
-    mergeWithConversationAndReturnNewConversation: (otherConversationId, next) =>
-        console.log "merging #{@conversation} and #{otherConversationId}"
-        ConversationRepo.getConversationById @conversationId, (err, conversation1) =>
-            ConversationRepo.getConversationById otherConversationId, (err, conversation2) =>
+    mergeWithConversationAndReturnNewConversation: (otherConversationId, callback) =>
+        if @conversationId is otherConversationId
+            return
+        ConversationRepo.createNewConversation {
+            _parents: [@conversationId, otherConversationId]
+        }, (err, newConversation) =>
+            ConversationRepo.getConversationById @conversationId, (err, conversation1) =>
                 conversation1.isMerged = true
-                conversation2.isMerged = true
-                ConversationRepo.createNewConversation {
-                    _parents: [@conversationId, otherConversationId]
-                    isMerged: true
-                }, (err, newConversation) =>
-                    conversation1.save (err) =>
+                conversation1.save (err) =>
+                    ConversationRepo.getConversationById otherConversationId, (err, conversation2) =>
+                        conversation2.isMerged = true
                         conversation2.save (err) =>
-                            UserRepo.removeConversationFromUser (@conversationId, otherConversationId) =>
-                                UserRepo.removeConversationFromUser
-                            next(newConversation)
+                            UserRepo.addConversationIdToUsersInConversationId conversation1._id, newConversation._id, (err) =>
+                                UserRepo.addConversationIdToUsersInConversationId conversation2._id, newConversation._id, (err) =>
+                                    callback(newConversation, @conversationId, otherConversationId)
 
-    attemptMerging: =>
-        console.log "attempting to merge conversation #{@conversationId}"
-        ConversationRepo.getAllConversationIds (err, allIds) =>
-            for  id in allIds
-                ran = Math.random() * (10 - 1) + 1
-                if ran is 3
-                    @mergeWithConversationAndReturnNewConversation id, (newConversation) ->
-
-
+    attemptMerging: (callback) =>
         # todo: algorithm
+        ConversationRepo.getAllConversationIds (err, allIds) =>
+            for id in allIds
+                if JSON.parse(JSON.stringify(id)) != JSON.parse(JSON.stringify(@conversationId))
+                    @mergeWithConversationAndReturnNewConversation JSON.parse(JSON.stringify(id)), callback
+                    return
 
 getNewMergingServiceWorker = (conversationId) ->
     new MergingServiceWorker(conversationId)

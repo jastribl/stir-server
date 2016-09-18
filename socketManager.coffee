@@ -2,8 +2,6 @@ UserRepo = require('./data/UserRepo')
 MessageRepo = require('./data/MessageRepo')
 ConversationRepo = require('./data/ConversationRepo')
 
-numberOfMessagesToLoad = 30
-
 module.exports = (io) ->
 
     io.on 'connection', (socket) ->
@@ -22,7 +20,7 @@ module.exports = (io) ->
             UserRepo.getConversationIdsFromUserWithId socket.user._id, (err, myUser) ->
                 if not err and myUser._conversations? and myUser._conversations.indexOf(_conversation) isnt -1
                     socket.join(_conversation)
-                    MessageRepo.getMessagesForConversationIdLimitToNum _conversation, numberOfMessagesToLoad, (err, messages) ->
+                    MessageRepo.getMessagesForConversationIdLimitToNum _conversation, (err, messages) ->
                         if err
                             socket.emit('error')
                         else

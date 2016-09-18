@@ -11,21 +11,19 @@ getConversationIdOfMessageById = (_message, next) -> # todo: remove this if not 
     .exec (err, message) ->
         next(err, message?._conversation)
 
-getMessagesForConversationIdLimitToNumBeforeDate = (_conversation, limitNum, date, next) -> # todo: remove this if not used
+getMessagesForConversationIdLimitToNumBeforeDate = (_conversation, date, next) -> # todo: remove this if not used
     Message.find({ _conversation: _conversation })
     .select('date content _user')
     .populate('_user', 'username')
     .where('date').lt(date)
-    .sort({ date: -1 })
-    .limit(limitNum)
+    .sort({ date: 1 })
     .exec next
 
-getMessagesForConversationIdLimitToNum = (_conversation, limitNum, next) ->
+getMessagesForConversationIdLimitToNum = (_conversation, next) ->
     Message.find({ _conversation: _conversation })
     .select('date content _user')
     .populate('_user', 'username')
     .sort({ date: 1 })
-    .limit(limitNum)
     .exec next
 
 deleteByConversationId = (_conversation, next) -> # todo: remove this if not used
