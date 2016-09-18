@@ -16,7 +16,10 @@ module.exports = (io) ->
                     socket.emit('error')
                 else
                     Conversation.populate populatedUser._conversations, (err, conversations) ->
-                        socket.emit('allConversationIds', conversations)
+                        if err
+                            socket.emit('err')
+                        else
+                            socket.emit('allConversationIds', conversations)
 
         socket.on 'conversationConnect', (_conversation) ->
             UserRepo.getConversationIdsFromUserWithId socket.user._id, (err, myUser) ->
