@@ -24,7 +24,7 @@ module.exports = (io) ->
                     return next(err) if err
                     io.sockets.in(_conversation).emit('newMessages', _conversation, [populatedMessage])
                     res.sendStatus(201)
-                    MergingService.getNewMergingServiceWorker(_conversation).attemptMerging (newConversation, _oldConversation1, _oldConversation2) ->
+                    MergingService.getNewMergingServiceWorker(_conversation).attemptMerging req.body.messageContent, (newConversation, _oldConversation1, _oldConversation2) ->
                         io.sockets.in(_oldConversation1).emit('mergeNotification', {
                             _oldConversation1: _oldConversation1
                             _oldConversation2: _oldConversation2

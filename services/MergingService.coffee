@@ -21,13 +21,15 @@ class MergingServiceWorker
                                 UserRepo.addConversationIdToUsersInConversationId conversation2._id, newConversation._id, (err) =>
                                     callback(newConversation, @conversationId, otherConversationId)
 
-    attemptMerging: (callback) =>
-        # todo: algorithm
-        ConversationRepo.getAllConversationIds (err, allIds) =>
-            for id in allIds
-                if JSON.parse(JSON.stringify(id)) != JSON.parse(JSON.stringify(@conversationId))
-                    @mergeWithConversationAndReturnNewConversation JSON.parse(JSON.stringify(id)), callback
-                    return
+    attemptMerging: (thing, callback) =>
+
+        if thing == 'thing'
+            # todo: algorithm
+            ConversationRepo.getAllConversationIds (err, allIds) =>
+                for id in allIds
+                    if JSON.parse(JSON.stringify(id)) != JSON.parse(JSON.stringify(@conversationId))
+                        @mergeWithConversationAndReturnNewConversation JSON.parse(JSON.stringify(id)), callback
+                        return
 
 getNewMergingServiceWorker = (conversationId) ->
     new MergingServiceWorker(conversationId)
