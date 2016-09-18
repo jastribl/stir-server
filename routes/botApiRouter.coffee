@@ -4,7 +4,7 @@ Cleverbot = require('cleverbot-node')
 
 module.exports = express.Router()
 
-    .post '/reply', (req, rs, next) ->
+    .post '/reply', (req, res, next) ->
         message = req.body.message
 
         cleverbot = new Cleverbot()
