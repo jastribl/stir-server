@@ -16,7 +16,6 @@ module.exports = (io) ->
             .select('_conversations')
             .populate('_conversations')
             .exec (err, populatedUser) ->
-                console.log populatedUser._conversations
                 if err
                     socket.emit('error')
                 else
