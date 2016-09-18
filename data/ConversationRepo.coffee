@@ -10,7 +10,7 @@ getConversationById = (_conversation, next) ->
     .exec next
 
 getAllUnmergedConversationIds = (next) ->
-    Conversation.find({ isMerged: false }).distinct '_id', next
+    Conversation.find().distinct '_id', next
 
 
 module.exports = {
