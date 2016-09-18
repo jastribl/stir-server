@@ -19,8 +19,8 @@ module.exports = (io) ->
                     socket.emit('allConversationIds', populatedUser['_conversations'])
 
         socket.on 'conversationConnect', (_conversation) ->
-            ConversationRepo.getConversationMembersById _conversation, (err, _members) ->
-                if not err and _members? and _members.indexOf(socket.user._id) isnt -1
+            UserRepo.getConversationIdsFromUserWithId socket.user._id, (err, myUser) ->
+                if not err and myUser._conversations? and myUser._conversations.indexOf(_conversation) isnt -1
                     socket.join(_conversation)
                     MessageRepo.getMessagesForConversationIdLimitToNum _conversation, numberOfMessagesToLoad, (err, messages) ->
                         if err

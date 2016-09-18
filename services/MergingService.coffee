@@ -12,7 +12,6 @@ class MergingServiceWorker
                 conversation2.isMerged = true
                 ConversationRepo.createNewConversation {
                     _parents: [@conversationId, otherConversationId]
-                    _members: conversation1._members.concat(conversation2._members)
                     isMerged: true
                 }, (err, newConversation) =>
                     conversation1.save (err) =>

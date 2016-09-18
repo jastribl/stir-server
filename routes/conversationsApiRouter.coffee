@@ -17,7 +17,6 @@ module.exports = (io) ->
                     return res.sendStatus(400, 'error, this user does not exist')
                 ConversationRepo.createNewConversation {
                     _parents: []
-                    _members: [_user, user._id]
                 }, (err, newConversation) ->
                     return next(err) if err
                     UserRepo.addConversationToUser _user, newConversation._id, (err) ->
