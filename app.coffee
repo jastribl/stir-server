@@ -14,12 +14,14 @@ session = require('express-session')
 
 config = require('./config.json')
 
-mongoose.connect(
-    if process.env.dbAddress?
-        process.env.dbAddress
-    else
-        config.dbAddress
-)
+dbAddress = if process.env.dbAddress?
+    process.env.dbAddress
+else
+    config.dbAddress
+mongoose.connect(dbAddress, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+})
 
 app.use(logger('dev'))
 app.use(cookieParser())

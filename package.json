@@ -32,7 +32,7 @@
     "gulp-nodemon": "^2.0.6",
     "lodash-node": "^3.10.2",
     "meaning-cloud": "^1.1.10",
-    "mongoose": "^4.1.7",
+    "mongoose": "^5.11.2",
     "morgan": "^1.7.0",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
