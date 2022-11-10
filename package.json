@@ -27,7 +27,7 @@
     "cors": "^2.8.1",
     "express": "~4.13.1",
     "express-session": "~1.0.0",
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.2",
     "gulp-coffeelint": "^0.6.0",
     "gulp-nodemon": "^2.0.6",
     "lodash-node": "^3.10.2",
